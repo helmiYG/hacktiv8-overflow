@@ -61,6 +61,8 @@ export default {
             })
             .then((result) => {
                 this.question = result.data
+                console.log('masuk get on q');
+                
                 this.getAsQs()
             }).catch((err) => {
                 console.log(err);
@@ -77,7 +79,7 @@ export default {
                 console.log('-----',result);
                 this.answers = result.data
             }).catch((err) => {
-                console.log(err);
+                console.log(err.response);
                 
             });
         },
@@ -99,6 +101,9 @@ export default {
 
     },
     created() {
+        console.log('masuk');
+        console.log(this.$route.params.id);
+        
         this.idQs = this.$route.params.id
         this.getOneQs()
 

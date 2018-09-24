@@ -33,7 +33,7 @@ module.exports = {
     },
 
     getAsQs: (req, res) => {
-        Answer.find({ questionId: req.body.questionId })
+        Answer.find({ questionId: req.params.questionId })
             .then((result) => {
                 res.status(200).json(result)
             })
