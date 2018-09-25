@@ -15,7 +15,8 @@ export default new Vuex.Store({
     isLogout: false,
     questions: [],
     readVote: '',
-    readVoteAs: ''
+    readVoteAs: '',
+    readAnswer: ''
   },
   mutations: {
     SET_MSGREG(state, payload) {
@@ -44,6 +45,9 @@ export default new Vuex.Store({
     },
     SET_VOTEAS (state, payload) {
       state.readVoteAs = payload
+    },
+    SET_ANSWER (state, payload) {
+      state.readAnswer = payload
     }
   },
   actions: {
@@ -88,7 +92,8 @@ export default new Vuex.Store({
     },
 
     logout(context) {
-      if (this.isLogout) {
+      console.log(this.state.isLogout);
+      if (this.state.isLogout) {
         context.commit('SET_ISLOGOUT', false)
       } else {
         context.commit('SET_ISLOGOUT', true)
@@ -151,9 +156,6 @@ export default new Vuex.Store({
 
     upvoteAs (context, data) {
       let {questionId, answerId} = data
-      console.log('masuk');
-      console.log(data);
-      
       axios({
         method: 'PUT',
         url: `${url}/answers/${answerId}/upvote`,
@@ -174,6 +176,55 @@ export default new Vuex.Store({
           timer: 1500
         })
       })
+    },
+
+    downVoteAs (context, data) {
+      axios({
+        method: 'PUT',
+        url: url+'/answers/'+data.answerId+'/downvote',
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        data: {
+          questionId: data.questionId
+        }
+      })
+      .then((result) => {
+        context.commit('SET_VOTEAS', result)
+      }).catch((err) => {
+        Swal({
+          type: 'error',
+          title: err.response.data.msg,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      });
+    },
+
+    addAnswer (context, data) {
+      axios({
+        method: 'POST',
+        url: url+'/answers',
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        data: {
+          answer: data.answer,
+          questionId: data.questionId
+        }
+      })
+      .then((result) => {
+        context.commit('SET_ANSWER', result)
+      })
+      .catch((err) => {
+        Swal({
+          type: 'error',
+          title: err.response.data.msg,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      });
+
     }
   }
 })

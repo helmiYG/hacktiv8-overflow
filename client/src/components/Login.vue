@@ -59,7 +59,7 @@
                     <label for="exampleInputPassword1">Password</label>
                     <input type="password" class="form-control" id="password-register" placeholder="Password" v-model="passwordR">
                 </div>
-                <button type="button" class="btn btn-success" @click="signup" >LOGIN</button>
+                <button type="button" class="btn btn-success" @click="signup" >Submit</button>
                 </form>
         </div>
 

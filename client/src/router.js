@@ -31,7 +31,19 @@ export default new Router({
         {
           path: '/forum/:id',
           name: 'forum-detail',
-          component: () => import('./components/DetailQs.vue')
+          component: () => import('./components/DetailQs.vue'),
+          children: [
+          ]
+        },
+        {
+          path: '/forum/:id/addanswer',
+          name: 'add-answer',
+          component: () => import('./components/AddAnswer.vue')
+        },
+        {
+          path: '/forum/:id/edit/:idanswer/answer',
+          name: 'edit-answer',
+          component: () => import('./components/AddAnswer.vue')
         }
       ]
     }

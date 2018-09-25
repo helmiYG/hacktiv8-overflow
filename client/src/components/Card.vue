@@ -7,9 +7,15 @@
             <p class="card-text"> {{question.description}} </p>
             <footer class="blockquote-footer"> {{question.userId.name}} <cite title="Source Title"> {{question.userId.email}} </cite></footer>
             <br>
-            <button type="button" class="btn btn-outline-dark btn-sm" @click="upvoteQsCp(question._id)"> <i class="fas fa-thumbs-up"> {{question.like.length}} </i> </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" @click="downvoteQsCp(question._id)"> <i class="fas fa-thumbs-down"> {{question.dislike.length}}</i> </button>
-            <br><br>
+            <div v-if="token">
+                <button type="button" class="btn btn-outline-dark btn-sm" @click="upvoteQsCp(question._id)"> <i class="fas fa-thumbs-up"> {{question.like.length}} </i> </button>
+                <button type="button" class="btn btn-outline-dark btn-sm" @click="downvoteQsCp(question._id)"> <i class="fas fa-thumbs-down"> {{question.dislike.length}}</i> </button>
+            </div>
+             <div v-if="!token">
+                <button type="button" class="btn btn-outline-dark btn-sm" @click="upvoteQsCp(question._id)" disabled> <i class="fas fa-thumbs-up"> {{question.like.length}} </i> </button>
+                <button type="button" class="btn btn-outline-dark btn-sm" @click="downvoteQsCp(question._id)" disabled> <i class="fas fa-thumbs-down"> {{question.dislike.length}}</i> </button>
+            </div>
+            <br>
             <router-link :to="`/forum/${question._id}`"> <button class="btn btn-primary btn-sm"> Read More &rarr; </button> </router-link>
         </div>
     </div>
@@ -29,11 +35,18 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-
+      token: false
     };
   },
   computed: {
-    ...mapState(['questions', 'readVote'])
+    ...mapState(
+        [
+          'questions', 
+          'readVote', 
+          'isToken',
+          'isLogout'
+        ]
+      )
   },
   methods: {
     ...mapActions(["getQs", "upvoteQs", 'downVoteQs']),
@@ -48,10 +61,24 @@ export default {
   },
   created() {
     this.getQs();
+    let newToken  = localStorage.getItem('token')
+    if (newToken) {
+      this.token = true
+    } else {
+      this.token = false
+    }
   },
   watch: {
     readVote() {
       this.getQs();
+    },
+
+    isToken () {
+      this.token = true
+    },
+
+    isLogout () {
+      this.token = false
     }
   }
 };
