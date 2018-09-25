@@ -4,7 +4,7 @@ var isLogin = require('../middlewares/isLogin');
 
 
 router.post('/', isLogin, createAs)
-      .get('/', getAsQs )
+      .get('/:idQ', getAsQs )
       .get('/all', getAs )
       .put('/:id', isLogin, updateAs )
       .put('/:id/upvote', isLogin, upVoteAs)

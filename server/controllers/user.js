@@ -21,7 +21,7 @@ module.exports = {
                 })
             } else {
                 res.status(400).json({
-                    msg :'email duplicated / value is null',
+                    msg :'email duplicated',
                     err
                 })
             }
@@ -29,7 +29,7 @@ module.exports = {
         })
         .catch((err) => {
             res.status(400).json({
-                msg :'email duplicated / value is null',
+                msg :'email duplicated',
                 err
             })
         });
@@ -72,8 +72,7 @@ module.exports = {
     },
 
     loginfb: (req, res) => {
-        console.log('masuk ============');
-        
+       
         let token = req.body.token
         let user_info = `https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`
         axios.get(user_info)

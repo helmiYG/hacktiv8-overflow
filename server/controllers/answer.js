@@ -33,7 +33,7 @@ module.exports = {
     },
 
     getAsQs: (req, res) => {
-        Answer.find({ questionId: req.body.questionId })
+        Answer.find({ questionId: req.params.idQ}).populate('userId')
             .then((result) => {
                 res.status(200).json(result)
             })
@@ -91,6 +91,9 @@ module.exports = {
     },
 
     upVoteAs: (req, res) => {
+        console.log(req.params.id);
+        console.log(req.body.questionId);
+        
         Answer.findOne({ questionId: req.body.questionId, _id: req.params.id })
             .then((result) => {
                 if (result) {

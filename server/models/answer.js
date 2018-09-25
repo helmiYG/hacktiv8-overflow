@@ -7,6 +7,8 @@ let answerSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
     like: [],
     dislike: []
+}, {
+    timestamps: true
 })
 
 let Answer = mongoose.model('Answer', answerSchema)

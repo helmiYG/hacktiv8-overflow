@@ -25,7 +25,7 @@ module.exports = {
     },
 
     getQs: (req, res) => {
-        Question.find()
+        Question.find().populate('userId')
             .then((result) => {
                 res.status(201).json(result)
             }).catch((err) => {
@@ -140,6 +140,7 @@ module.exports = {
         Question.findOne({ _id: id })
             .then((result) => {
                 if (result) {
+                    //apakah qs nya punya yg login
                     if (String(result.userId) == String(req.userLogin._id)) {
                         res.status(400).json({
                             msg: 'you cant upvote your own question'
@@ -175,7 +176,7 @@ module.exports = {
 
                             } else {
                                 res.status(400).json({
-                                    msg: 'you can upvote just once'
+                                    msg: 'you cant upvote twice'
                                 })
                             }
                         } else {
@@ -237,7 +238,7 @@ module.exports = {
 
                             } else {
                                 res.status(400).json({
-                                    msg: 'you can downvote just once'
+                                    msg: 'you cant downvote twice'
                                 })
                             }
                         } else {
