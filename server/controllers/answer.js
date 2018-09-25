@@ -33,7 +33,7 @@ module.exports = {
     },
 
     getAsQs: (req, res) => {
-        Answer.find({ questionId: req.params.questionId })
+        Answer.find({ questionId: req.params.idQ }).populate('userId')
             .then((result) => {
                 res.status(200).json(result)
             })
@@ -76,18 +76,18 @@ module.exports = {
                     err: err.message
                 })
             });
-        // Answer.updateOne({ questionId: req.body.questionId }, { $set: { answer: req.body.answer } })
-        //     .then((result) => {
-        //         res.status(201).json({
-        //             msg: 'update succes',
-        //             result
-        //         })
+        Answer.updateOne({ questionId: req.body.questionId }, { $set: { answer: req.body.answer } })
+            .then((result) => {
+                res.status(201).json({
+                    msg: 'update succes',
+                    result
+                })
 
-        //     }).catch((err) => {
-        //         res.status(400).json({
-        //             err: err.message
-        //         })
-        //     });
+            }).catch((err) => {
+                res.status(400).json({
+                    err: err.message
+                })
+            });
     },
 
     upVoteAs: (req, res) => {

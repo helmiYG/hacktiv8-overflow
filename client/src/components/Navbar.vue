@@ -55,6 +55,8 @@ export default {
     },
     watch: {
         isToken () {
+            console.log('masuk navbar is token');
+            
             this.token = true
         },
 
