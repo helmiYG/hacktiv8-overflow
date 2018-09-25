@@ -16,7 +16,9 @@ export default new Vuex.Store({
     questions: [],
     readVote: '',
     readVoteAs: '',
-    readAnswer: ''
+    readAnswer: '',
+    base_url: 'http://localhost:3000',
+    newQ: ''
   },
   mutations: {
     SET_MSGREG(state, payload) {
@@ -48,6 +50,10 @@ export default new Vuex.Store({
     },
     SET_ANSWER (state, payload) {
       state.readAnswer = payload
+    },
+
+    SET_NEWQ (state, payload) {
+      state.newQ = payload
     }
   },
   actions: {
@@ -84,15 +90,12 @@ export default new Vuex.Store({
           // this.$router.push('/')
         })
         .catch((err) => {
-          console.log('masuk err');
-
           context.commit('SET_LOGINERR', err)
           context.commit('SET_LOGINERRVAL', err.response.data.msg)
         });
     },
 
     logout(context) {
-      console.log(this.state.isLogout);
       if (this.state.isLogout) {
         context.commit('SET_ISLOGOUT', false)
       } else {
@@ -225,6 +228,43 @@ export default new Vuex.Store({
         })
       });
 
-    }
+    },
+
+    addQuestion (context, data) {
+      axios({
+        method: 'POST',
+        url: url +'/questions',
+        headers: {
+          token: localStorage.getItem('token'),
+        },
+        data: {
+          title: data.title,
+          description: data.description
+        }
+      })
+      .then((result) => {
+          context.commit('SET_NEWQ', result)
+      })
+      .catch((err) => {
+          console.log(err);
+          
+      });
+    },
+
+    deleteQ (context, data) {
+      axios({
+          method: 'DELETE',
+          url: `${this.state.base_url}/questions/${data}`,
+          headers: {
+              token: localStorage.getItem('token')
+          }
+      })
+      .then((result) => {
+        context.commit('SET_NEWQ', result)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   }
 })

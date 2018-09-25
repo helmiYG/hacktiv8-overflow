@@ -37,7 +37,7 @@ module.exports = {
 
     getOneQs: (req, res) => {
         let id = req.params.id
-        Question.findById(id)
+        Question.findById(id).populate('userId')
             .then((result) => {
                 res.status(201).json(result)
             }).catch((err) => {
@@ -48,7 +48,7 @@ module.exports = {
     },
 
     getUserQs: (req, res) => {
-        Question.find({ userId: req.userLogin._id })
+        Question.find({ userId: req.userLogin._id }).populate('userId')
             .then((result) => {
                 res.status(201).json(result)
             }).catch((err) => {

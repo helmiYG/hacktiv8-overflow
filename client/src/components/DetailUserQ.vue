@@ -1,12 +1,12 @@
 <template>
-    <div>
+      <div>
+          <h1>Detail Question</h1>
         <div class="card text-left">
-            <h5 class="card-header"> {{ question.createdAt | moment("dddd, MMMM Do YYYY") }}</h5>
+            <h5 class="card-header">{{ question.createdAt | moment("dddd, MMMM Do YYYY") }}</h5>
             <div class="card-body">
                 <h5 class="card-title"> {{question.title}} </h5>
                 <p class="card-text" v-html="question.description"> {{question.description}} </p>
                 <footer class="blockquote-footer"> {{question.userId.name}} <cite title="Source Title"> {{question.userId.email}} </cite></footer>
-                <br>
                 <div v-if="token">
                     <button type="button" class="btn btn-outline-dark btn-sm" v-if="token" @click="upvoteQsCp(question._id)"> <i class="fas fa-thumbs-up"> {{question.like.length}} </i> </button>
                     <button type="button" class="btn btn-outline-dark btn-sm" v-if="token" @click="downvoteQsCp(question._id)"> <i class="fas fa-thumbs-down"> {{question.dislike.length}}</i> </button>
@@ -16,17 +16,27 @@
                     <button type="button" class="btn btn-outline-dark btn-sm" disabled @click="downvoteQsCp(question._id)"> <i class="fas fa-thumbs-down"> {{question.dislike.length}}</i> </button>
                 </div>
             </div>
+            <div class="card-footer">
+                <router-link :to="`/myquestions/${question._id}/edit`">
+                    <button class="btn btn-sm">
+                        <i class="fas fa-edit"></i>
+                    </button >
+                </router-link>
+                <router-link to="/myquestions"></router-link>
+                <button class="btn btn-sm" @click="removeQ(question._id)">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
         </div>
         <br>
-          <router-link to="/forum"> <button type="button" class="btn btn-primary btn-sm"> back <i class="fas fa-chevron-left"></i></button></router-link>
+          <router-link to="/myquestions"> <button type="button" class="btn btn-primary btn-sm"> back <i class="fas fa-chevron-left"></i></button></router-link>
         <br>
         <div class="media text-left list-answer" v-for="(answer, index) in answers" :key="index">
             <img class="align-self-start mr-3" src="https://cdn1.iconfinder.com/data/icons/mix-color-3/502/Untitled-7-512.png" style="height: 30px" alt="Generic placeholder image">
             <div class="media-body">
-                <small>{{ answer.createdAt | moment("dddd, MMMM Do YYYY") }}</small>
-                <h5 class="mt-0"> {{answer.userId.name}} </h5> 
+                <h5 class="mt-0"> {{answer.userId.name}} </h5>
                 <p> {{answer.answer}}  
-                    <router-link :to="`/forum/${question._id}/edit/${answer._id}/answer`">
+                    <router-link :to="`/myquestions/${question._id}/edit/${answer._id}/answer`">
                         <button type="button" class="btn btn-success btn-sm" v-if="token && String(answer.userId._id) == String(userLogin)">
                             <i class="fas fa-edit"></i>
                         </button> 
@@ -54,25 +64,25 @@
 
 <script>
 import axios from 'axios'
-import { mapState, mapActions } from "vuex"
+import {mapState, mapActions} from 'vuex'
 export default {
     data () {
         return {
-            url: 'http://localhost:3000',
             question: '',
-            idQs: '',
             answers: [],
-            newAnswer: '',
             token: false,
-            userLogin: ''
+            userLogin: '',
+            newAnswer: ''
         }
     },
     computed: {
         ...mapState([
+            'base_url',
             'readVote',
             'readVoteAs',
-            'readAnswer',
             'isToken',
+            'readAnswer',
+            'newQ',
             'isLogout'
         ])
     },
@@ -82,8 +92,10 @@ export default {
             'downVoteQs',
             'upvoteAs',
             'downVoteAs',
-            'addAnswer'
+            'addAnswer',
+            'deleteQ'
         ]),
+
         upvoteQsCp(id) {
             this.upvoteQs(id);
         },
@@ -92,10 +104,10 @@ export default {
             this.downVoteQs(id)
         },
 
-        getOneQs () {
+         getOneQs () {
             axios({
                 method: 'GET',
-                url: `${this.url}/questions/${this.idQs}`
+                url: `${this.base_url}/questions/${this.idQs}`
             })
             .then((result) => {
                 this.question = result.data
@@ -109,7 +121,7 @@ export default {
         getAsQs () {
             axios({
                 method: 'GET',
-                url: `${this.url}/answers/${this.idQs}`,
+                url: `${this.base_url}/answers/${this.idQs}`,
             })
             .then((result) => {
                 this.answers = result.data
@@ -148,8 +160,9 @@ export default {
             this.userLogin = localStorage.getItem('idLogin')
         },
 
-
-
+        removeQ (id) {
+            this.deleteQ(id)
+        }
     },
     created() {
         this.idQs = this.$route.params.id
@@ -169,28 +182,26 @@ export default {
         },
 
         readVoteAs () {
-            this.getAsQs()
+           this.getAsQs()
         },
 
         readAnswer () {
             this.getAsQs()
         },
 
-        isToken () {
-            this.token = true
+        newQ () {
+            this.$router.push('/myquestions')
         },
-
         isLogout () {
-            this.token = false
+            this.$router.push('/login')
         }
 
-        
     }
 }
 </script>
 
 <style>
- .list-answer {
+.list-answer {
     border: solid 1px;
     padding: 10px;
     margin-top: 10px

@@ -21,6 +21,7 @@ export default {
 };
 </script>
 <style>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
 .all-body{
   margin-top: 80px;
   min-height: 500px

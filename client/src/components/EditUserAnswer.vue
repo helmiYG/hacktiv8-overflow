@@ -1,8 +1,8 @@
 <template>
-    <div>
+     <div>
         <h1>Update Your Answer</h1>
         <form>
-             <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="newAnswer"></textarea>
+            <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="newAnswer"></textarea>
         </form>
         <button type="button" class="btn btn-success btn-sm" @click="updateAs">Submit</button>
     </div>
@@ -14,12 +14,12 @@ import axios from 'axios'
 export default {
     data () {
         return {
+            newAnswer: '',
             idQ: '',
-            idA: '',
-            newAnswer: ''
+            idA: ''
         }
     },
-    computed: {
+     computed: {
         ...mapState([
             'base_url',
             'isLogout'
@@ -41,9 +41,8 @@ export default {
                 console.log(err);
             });
         },
-
         updateAs () {
-           axios({
+            axios({
                method: 'PUT',
                url: `${this.base_url}/answers/${this.idA}`,
                 headers: {
@@ -54,8 +53,8 @@ export default {
                    answer: this.newAnswer
                },
            }) 
-           .then((result) => {
-               this.$router.push(`/forum/${this.idQ}`)
+           .then(() => {
+               this.$router.push(`/myquestions/${this.idQ}`)
            }).catch((err) => {
                console.log(err.response);
                
@@ -67,8 +66,7 @@ export default {
         this.idA = this.$route.params.idanswer
         this.getOneAs()
     },
-
-     watch: {
+      watch: {
         isLogout () {
              this.$router.push('/login')
         }

@@ -9,8 +9,6 @@ isLogin = function( req, res, next){
         .then(( isLogin ) => {
             if( isLogin ){
                 req.userLogin = isLogin
-                console.log('masuk');
-                
                 next()
             }else{
                 res.status(400).json({msg: 'please login first'})

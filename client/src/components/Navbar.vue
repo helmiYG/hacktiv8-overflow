@@ -4,7 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">Hacktiv8 Overflow</a>
+            <a class="navbar-brand" style="color: white">Hacktiv8 Overflow</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
                 <router-link class="nav-link" to="/">Home</router-link>
@@ -12,8 +12,9 @@
             <li class="nav-item">
                 <router-link class="nav-link" to="/forum">Forum</router-link>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" v-if="token">My Question <span class="sr-only"></span></a>
+            <li class="nav-item" v-if="token">
+                <router-link class="nav-link" to="/myquestions">MyQuestion</router-link>
+                
             </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -55,8 +56,6 @@ export default {
     },
     watch: {
         isToken () {
-            console.log('masuk navbar is token');
-            
             this.token = true
         },
 

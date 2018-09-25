@@ -68,39 +68,39 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      name: "",
-      emailL: "",
-      passwordL: "",
-      emailR: "",
-      passwordR: "",
+      name: '',
+      emailL: '',
+      passwordL: '',
+      emailR: '',
+      passwordR: '',
       msgRegStatus: false,
       msgRegErrStatus: false,
-      msgRegVal: "register succes, please login now",
+      msgRegVal: 'register succes, please login now',
       msgRegErr: [],
       msgLoginErr: [],
       msgLoginStatus: false
     };
   },
   computed: {
-    ...mapState(["msgReg", "regErr", "loginErr", "loginErrVal", "isToken"])
+    ...mapState(['msgReg', 'regErr', 'loginErr', 'loginErrVal', 'isToken'])
   },
   methods: {
-    ...mapActions(["register", "login"]),
+    ...mapActions(['register', 'login']),
 
     signup() {
       this.msgRegErr = [];
       if (!this.name) {
-        this.msgRegErr.push("name is required");
+        this.msgRegErr.push('name is required');
       }
       if (!this.emailR) {
-        this.msgRegErr.push("email is required");
+        this.msgRegErr.push('email is required');
       }
       if (!this.passwordR) {
-        this.msgRegErr.push("password is required");
+        this.msgRegErr.push('password is required');
       }
 
       if (this.msgRegErr.length < 1) {
@@ -111,7 +111,7 @@ export default {
         };
 
         this.register(newUser);
-        (this.name = ""), (this.passwordR = ""), (this.emailR = "");
+        (this.name = ''), (this.passwordR = ''), (this.emailR = '');
       }
     },
 
@@ -126,10 +126,10 @@ export default {
     signin() {
       this.msgLoginErr = [];
       if (!this.emailL) {
-        this.msgLoginErr.push("email is required");
+        this.msgLoginErr.push('email is required');
       }
       if (!this.passwordL) {
-        this.msgLoginErr.push("password is required");
+        this.msgLoginErr.push('password is required');
       }
 
       if (this.msgLoginErr.length < 1) {
@@ -138,19 +138,20 @@ export default {
           password: this.passwordL
         };
         this.login(userLogin);
-        this.emailL = "";
-        this.passwordL = "";
+        this.emailL = '';
+        this.passwordL = '';
       }
     },
     falseLoginStatus() {
       this.msgLoginStatus = false;
-    }
+    },
+
   },
 
   created() {
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem('token');
     if (token) {
-      this.$router.push("/");
+      this.$router.push('/');
     }
   },
 
@@ -166,7 +167,7 @@ export default {
     regErr() {
       this.msgRegErrStatus = true;
       this.msgRegErr = [];
-      this.msgRegErr.push("email is already in use");
+      this.msgRegErr.push('email is already in use');
     },
 
     msgLoginErr() {
@@ -180,9 +181,9 @@ export default {
     },
 
     isToken() {
-      let token = localStorage.getItem("token");
+      let token = localStorage.getItem('token');
       if (token) {
-        this.$router.push("/");
+        this.$router.push('/');
       }
     }
   }

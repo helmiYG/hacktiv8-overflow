@@ -36,15 +36,42 @@ export default new Router({
           ]
         },
         {
-          path: '/forum/:id/addanswer',
-          name: 'add-answer',
-          component: () => import('./components/AddAnswer.vue')
-        },
-        {
           path: '/forum/:id/edit/:idanswer/answer',
           name: 'edit-answer',
-          component: () => import('./components/AddAnswer.vue')
+          component: () => import('./components/EditAnswer.vue')
         }
+      ]
+    },
+    {
+      path: '/myquestions',
+      name: 'myquestion',
+      component: () => import('./views/MyQ.vue'),
+      children: [
+        {
+          path: '/myquestions',
+          name: 'myquestion-cp',
+          component: () => import('./components/MyQCp')
+        },
+        {
+          path: '/myquestions/addquestion',
+          name: 'addquestion',
+          component: () => import('./components/AddQuestion')
+        },
+        {
+          path: '/myquestions/:id',
+          name: 'questions-detail',
+          component: () => import('./components/DetailUserQ')
+        },
+        {
+          path: '/myquestions/:id/edit/:idanswer/answer',
+          name: 'edit-answeruser',
+          component: () => import('./components/EditUserAnswer')
+        },
+        {
+          path: '/myquestions/:id/edit',
+          name: 'edit-questions',
+          component: () => import('./components/EditQuestion')
+        },
       ]
     }
   ]

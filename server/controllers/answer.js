@@ -46,21 +46,22 @@ module.exports = {
 
     updateAs: (req, res) => {
         let idAnswer = req.params.id
-        Answer.findOne({ questionId: req.body.questionId })
+        Answer.findOne({ questionId: req.body.questionId,  _id: idAnswer})
             .then((result) => {
                 if (result) {
                     if (String(result.userId) == String(req.userLogin._id)) {
                         Answer.updateOne({ _id: idAnswer }, { $set: { answer: req.body.answer } })
-                            .then((updated) => {
-                                res.status(201).json({
-                                    msg: 'update succes',
-                                    updated
-                                })
-                            }).catch((err) => {
-                                res.status(400).json({
-                                    err: err.message
-                                })
-                            });
+                        .then((updated) => {
+                            res.status(201).json({
+                                msg: 'update succes',
+                                updated
+                            })
+                        })
+                        .catch((err) => {
+                            res.status(400).json({
+                                err: err.message
+                            })
+                        });
                     } else {
                         res.status(400).json({
                             msg: 'you are not authorized to update this answer'
@@ -76,24 +77,9 @@ module.exports = {
                     err: err.message
                 })
             });
-        Answer.updateOne({ questionId: req.body.questionId }, { $set: { answer: req.body.answer } })
-            .then((result) => {
-                res.status(201).json({
-                    msg: 'update succes',
-                    result
-                })
-
-            }).catch((err) => {
-                res.status(400).json({
-                    err: err.message
-                })
-            });
     },
 
     upVoteAs: (req, res) => {
-        console.log(req.params.id);
-        console.log(req.body.questionId);
-        
         Answer.findOne({ questionId: req.body.questionId, _id: req.params.id })
             .then((result) => {
                 if (result) {
@@ -215,5 +201,23 @@ module.exports = {
                     err: err.message
                 })
             });
+    },
+
+    getOneAs: (req, res) => {
+        Answer.findOne({questionId: req.params.idQ, _id: req.params.idA})
+        .then((result) => {
+            if (result) {
+                res.status(200).json(result)
+                
+            } else {
+                res.status(400).json({
+                    msg: 'answer not found'
+                })
+            }
+        }).catch((err) => {
+            res.status(400).json({
+                err: err.message
+            })
+        });
     }
 };
