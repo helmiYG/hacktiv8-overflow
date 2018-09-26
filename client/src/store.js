@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import firebase from 'firebase'
 let url = 'http://localhost:3000'
 
 Vue.use(Vuex)
@@ -95,7 +96,27 @@ export default new Vuex.Store({
         });
     },
 
+    loginGoogle (context, data) {
+        axios({
+          method: 'POST',
+          url: this.state.base_url+'/users/google',
+          data: {
+            email: data.email,
+            name: data.name
+          }
+        })
+        .then((result) => {
+            context.commit('SET_ISTOKEN', result)
+            localStorage.setItem('token', result.data.token)
+            localStorage.setItem('idLogin', result.data.id)
+        })
+        .catch((err) => {
+            console.log(err.response);
+            
+        });
+    },
     logout(context) {
+      firebase.auth().signOut();
       if (this.state.isLogout) {
         context.commit('SET_ISLOGOUT', false)
       } else {

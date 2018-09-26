@@ -24,6 +24,7 @@
                     <input type="password" class="form-control" id="password-login" placeholder="Password" v-model="passwordL">
                 </div>
                 <button type="button" class="btn btn-success" @click="signin">LOGIN</button>
+                <div id="firebaseui-auth-container"></div>
                 </form>
             </div>
         </div>
@@ -61,6 +62,7 @@
                 </div>
                 <button type="button" class="btn btn-success" @click="signup" >Submit</button>
                 </form>
+                
         </div>
 
     </div>
@@ -68,6 +70,9 @@
 </template>
 
 <script>
+import firebase from 'firebase';
+import firebaseui from 'firebaseui'
+import {config} from '../helpers/firebaseConfig';
 import { mapActions, mapState } from 'vuex';
 export default {
   data() {
@@ -83,6 +88,7 @@ export default {
       msgRegErr: [],
       msgLoginErr: [],
       msgLoginStatus: false
+
     };
   },
   computed: {
@@ -154,6 +160,20 @@ export default {
       this.$router.push('/');
     }
   },
+
+  mounted() {
+    var uiConfig = {
+      signInSuccessUrl: '/',
+      signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        ]
+      };
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start('#firebaseui-auth-container', uiConfig);
+    },
 
   watch: {
     msgReg() {

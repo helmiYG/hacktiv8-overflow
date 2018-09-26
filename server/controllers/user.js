@@ -132,4 +132,53 @@ module.exports = {
         });
     },
 
+
+    loginGoogle: (req, res) => {
+        User.findOne({email: req.body.email})
+        .then((user) => {
+            if (user) {
+                let token = jwt.sign({
+                    id: user._id,
+                    name: user.name,
+                    email: user.email
+                },process.env.secret)
+                
+                res.status(200).json({
+                   msg: 'login succes',
+                   token,
+                   id: user._id
+               })  
+            } else {
+                var hash = bcrypt.hashSync(req.body.email, salt); 
+                User.create({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: hash,
+                })
+                .then((newUser) => {
+                    let token = jwt.sign({
+                        id: newUser._id,
+                        name: newUser.name,
+                        email: newUser.email
+                    },process.env.secret)
+
+                    res.status(200).json({
+                        msg: 'login succes',
+                        token,
+                        id: newUser._id
+                    })
+
+                })
+                .catch((err) => {
+                    res.status(500).json({
+                        msg: err.message
+                    })
+                });
+            }
+        }).catch((err) => {
+            res.status(500).json({
+                msg: err.message
+            })
+        });
+    }
 };
