@@ -142,7 +142,6 @@ module.exports = {
                     name: user.name,
                     email: user.email
                 },process.env.secret)
-                
                 res.status(200).json({
                    msg: 'login succes',
                    token,
