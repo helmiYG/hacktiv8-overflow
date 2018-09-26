@@ -59,6 +59,12 @@
                     <label for="exampleInputPassword1">Password</label>
                     <input type="password" class="form-control" id="password-register" placeholder="Password" v-model="passwordR">
                 </div>
+                <g-signin-button
+                :params="googleSignInParams"
+                @success="onSignInSuccess"
+                @error="onSignInError">
+                Sign in with Google
+              </g-signin-button>
                 <button type="button" class="btn btn-success" @click="signup" >Submit</button>
                 </form>
         </div>
@@ -68,6 +74,7 @@
 </template>
 
 <script>
+import db from '../firebase.js'
 import { mapActions, mapState } from 'vuex';
 export default {
   data() {
@@ -82,7 +89,10 @@ export default {
       msgRegVal: 'register succes, please login now',
       msgRegErr: [],
       msgLoginErr: [],
-      msgLoginStatus: false
+      msgLoginStatus: false,
+      googleSignInParams: {
+        client_id: '730496636817-6dhfqd8ovplvd9q2ksg4bms5igha007p.apps.googleusercontent.com'
+      }
     };
   },
   computed: {
@@ -90,7 +100,16 @@ export default {
   },
   methods: {
     ...mapActions(['register', 'login']),
-
+    onSignInSuccess (googleUser) {
+      // `googleUser` is the GoogleUser object that represents the just-signed-in user.
+      // See https://developers.google.com/identity/sign-in/web/reference#users
+      const profile = googleUser.getBasicProfile() // etc etc
+      console.log(profile);
+    },
+    onSignInError (error) {
+      // `error` contains any error occurred.
+      console.log('OH NOES', error)
+    },
     signup() {
       this.msgRegErr = [];
       if (!this.name) {
