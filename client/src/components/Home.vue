@@ -37,8 +37,6 @@ export default {
             email: this.email,
             name: this.name
         }
-
-        console.log(obj)
         this.loginGoogle(obj)
     },
 }

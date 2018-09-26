@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import firebase from 'firebase'
-let url = 'http://localhost:3000'
+let url = 'https://server-overflow.helmiyogantara.club'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     readVote: '',
     readVoteAs: '',
     readAnswer: '',
-    base_url: 'http://localhost:3000',
+    base_url: 'https://server-overflow.helmiyogantara.club',
     newQ: ''
   },
   mutations: {

@@ -60,12 +60,6 @@
                     <label for="exampleInputPassword1">Password</label>
                     <input type="password" class="form-control" id="password-register" placeholder="Password" v-model="passwordR">
                 </div>
-                <g-signin-button
-                :params="googleSignInParams"
-                @success="onSignInSuccess"
-                @error="onSignInError">
-                Sign in with Google
-              </g-signin-button>
                 <button type="button" class="btn btn-success" @click="signup" >Submit</button>
                 </form>
                 
@@ -178,7 +172,6 @@ export default {
 
   mounted() {
     var uiConfig = {
-      signInSuccessUrl: '/',
       signInOptions: [
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
           firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -186,7 +179,11 @@ export default {
           firebase.auth.GithubAuthProvider.PROVIDER_ID,
         ]
       };
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    let ui = firebaseui.auth.AuthUI.getInstance();
+    if (!ui) {
+      ui = new firebaseui.auth.AuthUI(firebase.auth());
+    }
+    // var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start('#firebaseui-auth-container', uiConfig);
     },
 

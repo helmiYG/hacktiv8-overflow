@@ -58,7 +58,7 @@ import { mapState, mapActions } from "vuex"
 export default {
     data () {
         return {
-            url: 'http://localhost:3000',
+            url: 'https://server-overflow.helmiyogantara.club',
             question: '',
             idQs: '',
             answers: [],
